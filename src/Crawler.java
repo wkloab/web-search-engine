@@ -31,6 +31,12 @@ public class Crawler
 	{
 		url = _url;
 	}
+        
+        public String geturl()
+        {
+            return this.url;
+        }
+        
 	public Vector<String> extractWords() throws ParserException
 
 	{
