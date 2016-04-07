@@ -8,6 +8,9 @@
  *
  * @author RickyLo
  */
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.util.Vector;
 import org.htmlparser.beans.StringBean;
 import org.htmlparser.Node;
@@ -21,6 +24,7 @@ import org.htmlparser.util.ParserException;
 import java.util.StringTokenizer;
 import org.htmlparser.beans.LinkBean;
 import java.net.URL;
+import java.util.Date;
 import java.util.Enumeration;
 
 
@@ -75,13 +79,35 @@ public class Crawler
             }
             return links;
 	}
-	
-	public static void main (String[] args)
+        
+        public int getSize() throws MalformedURLException, IOException
+
+	{
+            // extract links in url and return them
+            // ADD YOUR CODES HERE
+            HttpURLConnection content = (HttpURLConnection) new URL(this.url).openConnection();
+            content .setRequestProperty("Accept-Encoding", "identity"); 
+            content.connect();
+            int length = content.getContentLength();
+            return length;
+	}
+        
+        public Date getLastModified() throws MalformedURLException, IOException
+
+	{
+            // extract links in url and return them
+            // ADD YOUR CODES HERE
+            HttpURLConnection content = (HttpURLConnection) new URL(this.url).openConnection();
+            content.connect();
+            Date date = new Date(content.getLastModified());
+            return date;
+	}
+        
+	public static void main (String[] args) throws MalformedURLException, IOException
 	{
             try
             {
                 Crawler crawler = new Crawler("http://www.cse.ust.hk");
-
 
 //                Enumeration e=links.elements();
 //                while (e.hasMoreElements()) {         
@@ -90,17 +116,22 @@ public class Crawler
 //                        Enumeration e=words.elements();
 //                        while (e.hasMoreElements()) {         
 //                            System.out.println("token :" + e.nextElement());
-//                        }  
-
+//                        }
+                int length = crawler.getSize();
+                System.out.println("Size of page: "+length);
+                
+                Date date = crawler.getLastModified();
+                System.out.println("Last modified: "+date); 
+                
                 Vector<String> words = crawler.extractWords();		
 
-                System.out.println("Words in "+crawler.url+":");
+                System.out.println("Words in "+crawler.geturl()+":");
                 for(int i = 0; i < words.size(); i++)
                         System.out.print(words.get(i)+" ");
                 System.out.println("\n\n");
 
                 Vector<String> links = crawler.extractLinks();
-                System.out.println("Links in "+crawler.url+":");
+                System.out.println("Links in "+crawler.geturl()+":");
                 for(int i = 0; i < links.size(); i++)		
                         System.out.println(links.get(i));
                 System.out.println("");
