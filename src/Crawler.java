@@ -26,6 +26,12 @@ import org.htmlparser.beans.LinkBean;
 import java.net.URL;
 import java.util.Date;
 import java.util.Enumeration;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 
 public class Crawler
@@ -86,7 +92,7 @@ public class Crawler
             // extract links in url and return them
             // ADD YOUR CODES HERE
             HttpURLConnection content = (HttpURLConnection) new URL(this.url).openConnection();
-            content .setRequestProperty("Accept-Encoding", "identity"); 
+            content.setRequestProperty("Accept-Encoding", "identity"); 
             content.connect();
             int length = content.getContentLength();
             return length;
@@ -94,10 +100,11 @@ public class Crawler
         
         public Date getLastModified() throws MalformedURLException, IOException
 
-	{
+        {
             // extract links in url and return them
             // ADD YOUR CODES HERE
             HttpURLConnection content = (HttpURLConnection) new URL(this.url).openConnection();
+            content.setRequestProperty("Accept-Encoding", "identity"); 
             content.connect();
             Date date = new Date(content.getLastModified());
             return date;

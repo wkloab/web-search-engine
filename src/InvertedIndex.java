@@ -57,7 +57,7 @@ public class InvertedIndex
 			boolean edited = false;
 			tempArrayList=(ArrayList<Content>)hashtable.get(word);
 			for(int i=0; i<tempArrayList.size();i++){
-				if(tempArrayList.get(i).docURL==x){
+				if(tempArrayList.get(i).docURL.equals(x)){
 					//Error handle: repeat appear for a word in same doc same position
 					if(tempArrayList.get(i).location.indexOf(y)!=-1){  
 						edited=true;
@@ -113,7 +113,6 @@ public class InvertedIndex
 			key=(String)iter.next();
 		}
 	}	
-
 	public void printAll_doc() throws IOException
 	{
 		// Print all the data in the hashtable
@@ -133,61 +132,68 @@ public class InvertedIndex
 			key=(String)iter.next();
 		}
 	}	
-
-	public static void main(String[] args){  
-		ArrayList<Crawler> crawlerList=new ArrayList<Crawler>();
-		try{
-			//initialize docs
-			Crawler crawler = new Crawler("http://www.cse.ust.hk");//doc1
-			crawlerList.add(crawler);
-			crawler = new Crawler("http://www.cse.ust.hk/admin/welcome/");//doc2
-			crawlerList.add(crawler);
-			crawler = new Crawler("http://www.cse.ust.hk/admin/about/");//doc3
-			crawlerList.add(crawler);
-			crawler = new Crawler("http://www.cse.ust.hk/admin/factsheet/");//doc4
-			crawlerList.add(crawler);
-			crawler = new Crawler("http://www.cse.ust.hk/News/?type=news|achievement");//doc5
-			crawlerList.add(crawler);
-			//link to db--ht1,handle word database
-			InvertedIndex index = new InvertedIndex("4321phase1","ht1");
-			for(int i=0;i<crawlerList.size();i++){
-				Crawler tempCrawler = crawlerList.get(i);
-				Vector<String> words = tempCrawler.extractWords();
-				for(int position = 0; position < words.size(); position++){
-					index.addEntry(words.get(position), tempCrawler.geturl(), position);
-				}
-			}
-			index.printAll();
-			index.finalize();
-			System.out.println("\n\n");
-			// link to db--ht2,start handling doc database
-			index = new InvertedIndex("4321phase1","ht2");
-			for(int i=0;i<crawlerList.size();i++){
-				Crawler tempCrawler = crawlerList.get(i);
-				//task: add title to crawler class
-				String tempTitle="doc"+i;
-				//task: add last modifiedDate to crawler class
-				String tempLastModifiedDate="today";
-				//task: add size
-				int tempSize=-1;
-				ArrayList <String> tempLinksList=new ArrayList <String>();
-				Vector<String> links = tempCrawler.extractLinks();
-				for(int linkNo = 0; linkNo < links.size(); linkNo++)	{	
-					tempLinksList.add(links.get(linkNo));
-				}
-				Doc tempDoc=new Doc(tempTitle,tempLastModifiedDate,tempSize,tempLinksList);
-				index.addEntry(tempCrawler.geturl(), tempDoc);
-			}
-			index.printAll_doc();
-			index.finalize();
-		}
-		catch (ParserException e)
-		{
-			e.printStackTrace ();
-		}
-		catch(IOException ex)
-		{
-			System.err.println(ex.toString());
-		}
+	public FastIterator getKeys() throws IOException{
+		FastIterator iter = hashtable.keys();
+		return iter;
 	}
+	public Object getHashtable(String key) throws IOException{
+		return hashtable.get(key);
+	}
+//		public static void main(String[] args){  
+//			ArrayList<Crawler> crawlerList=new ArrayList<Crawler>();
+//			try{
+//				//initialize docs
+//				Crawler crawler = new Crawler("http://www.cse.ust.hk");//doc1
+//				crawlerList.add(crawler);
+//				crawler = new Crawler("http://www.cse.ust.hk/admin/welcome/");//doc2
+//				crawlerList.add(crawler);
+//				crawler = new Crawler("http://www.cse.ust.hk/admin/about/");//doc3
+//				crawlerList.add(crawler);
+//				crawler = new Crawler("http://www.cse.ust.hk/admin/factsheet/");//doc4
+//				crawlerList.add(crawler);
+//				crawler = new Crawler("http://www.cse.ust.hk/News/?type=news|achievement");//doc5
+//				crawlerList.add(crawler);
+//				//link to db--ht1,handle word database
+//				InvertedIndex index = new InvertedIndex("4321phase1","ht1");
+//				for(int i=0;i<crawlerList.size();i++){
+//					Crawler tempCrawler = crawlerList.get(i);
+//					Vector<String> words = tempCrawler.extractWords();
+//					for(int position = 0; position < words.size(); position++){
+//						index.addEntry(words.get(position), tempCrawler.url, position);
+//					}
+//				}
+//				index.printAll();
+//				index.finalize();
+//				System.out.println("\n\n");
+//				// link to db--ht2,start handling doc database
+//				index = new InvertedIndex("4321phase1","ht2");
+//				for(int i=0;i<crawlerList.size();i++){
+//					Crawler tempCrawler = crawlerList.get(i);
+//					//task: add title to crawler class
+//					String tempTitle="doc"+i;
+//					//task: add last modifiedDate to crawler class
+//					String tempLastModifiedDate="today";
+//					//task: add size
+//					int tempSize=-1;
+//					ArrayList <String> tempLinksList=new ArrayList <String>();
+//					Vector<String> links = tempCrawler.extractLinks();
+//					for(int linkNo = 0; linkNo < links.size(); linkNo++)	{	
+//						tempLinksList.add(links.get(linkNo));
+//					}
+//					Doc tempDoc=new Doc(i, tempTitle,tempLastModifiedDate,tempSize,tempLinksList);
+//					index.addEntry(tempCrawler.url, tempDoc);
+//				}
+//				index.printAll_doc();
+//				index.finalize();
+//				
+//			}
+//			catch (ParserException e)
+//			{
+//				e.printStackTrace ();
+//			}
+//			catch(IOException ex)
+//			{
+//				System.err.println(ex.toString());
+//			}
+//		}
 }
