@@ -147,15 +147,11 @@ public class InvertedIndex
 			try{
 				//initialize docs
 				Crawler crawler = new Crawler("http://www.cse.ust.hk");//doc1
-				crawlerList.add(crawler);
-				crawler = new Crawler("http://www.cse.ust.hk/admin/welcome/");//doc2
-				crawlerList.add(crawler);
-				crawler = new Crawler("http://www.cse.ust.hk/admin/about/");//doc3
-				crawlerList.add(crawler);
-				crawler = new Crawler("http://www.cse.ust.hk/admin/factsheet/");//doc4
-				crawlerList.add(crawler);
-				crawler = new Crawler("http://www.cse.ust.hk/News/?type=news|achievement");//doc5
-				crawlerList.add(crawler);
+                                Vector<String> childLinks = crawler.extractLinks();
+                                for(int i = 0; i < childLinks.size(); i++){		
+                                        Crawler crawler_child = new Crawler(childLinks.get(i));
+                                        crawlerList.add(crawler_child);                    
+                                }
 				//link to db--ht1,handle word database
 				InvertedIndex index = new InvertedIndex("4321phase1","ht1");
 				for(int i=0;i<crawlerList.size();i++){
@@ -164,7 +160,7 @@ public class InvertedIndex
                                         
 					for(int position = 0; position < words.size(); position++){
                                             String tempWord = ss.stem(words.get(position).replaceAll(" ", ""));
-                                            if(tempWord != '')
+                                            if(!tempWord.equals(""))
                                             if(!ss.isStopWord(tempWord)){
 						index.addEntry(tempWord, tempCrawler.geturl(), position);
                                             }else{
@@ -178,13 +174,14 @@ public class InvertedIndex
 				// link to db--ht2,start handling doc database
 				index = new InvertedIndex("4321phase1","ht2");
 				for(int i=0;i<crawlerList.size();i++){
+                                    try{
 					Crawler tempCrawler = crawlerList.get(i);
 					//task: add title to crawler class
-					String tempTitle="doc"+i;
+					String tempTitle= tempCrawler.getPageTitle();
 					//task: add last modifiedDate to crawler class
-					String tempLastModifiedDate="today";
+					String tempLastModifiedDate= tempCrawler.getLastModified().toString();
 					//task: add size
-					int tempSize=-1;
+					int tempSize= tempCrawler.getSize();
 					ArrayList <String> tempLinksList=new ArrayList <String>();
 					Vector<String> links = tempCrawler.extractLinks();
 					for(int linkNo = 0; linkNo < links.size(); linkNo++)	{	
@@ -192,6 +189,9 @@ public class InvertedIndex
 					}
 					Doc tempDoc = new Doc(i, tempTitle,tempLastModifiedDate,tempSize,tempLinksList);
 					index.addEntry(tempCrawler.geturl(), tempDoc);
+                                    }catch(Exception e){
+                                        
+                                    }
 				}
 				index.printAll_doc();
 				index.finalize();
