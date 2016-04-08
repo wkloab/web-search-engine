@@ -12,7 +12,9 @@ import java.util.ArrayList;
  *
  * @author RickyLo
  */
-class Content implements Serializable {
+class Content implements Serializable{
 	public String docURL;
 	public ArrayList<Integer> location = new ArrayList<Integer>();
+
+    
 }

@@ -136,6 +136,8 @@ public class InvertedIndex
 		FastIterator iter = hashtable.keys();
 		return iter;
 	}
+        
+        
 	public Object getHashtable(String key) throws IOException{
 		return hashtable.get(key);
 	}
@@ -162,6 +164,7 @@ public class InvertedIndex
                                         
 					for(int position = 0; position < words.size(); position++){
                                             String tempWord = ss.stem(words.get(position).replaceAll(" ", ""));
+                                            if(tempWord != '')
                                             if(!ss.isStopWord(tempWord)){
 						index.addEntry(tempWord, tempCrawler.geturl(), position);
                                             }else{
