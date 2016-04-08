@@ -8,7 +8,9 @@
  *
  * @author RickyLo
  */
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.util.Vector;
@@ -26,6 +28,8 @@ import org.htmlparser.beans.LinkBean;
 import java.net.URL;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Crawler
@@ -86,9 +90,20 @@ public class Crawler
             // extract links in url and return them
             // ADD YOUR CODES HERE
             HttpURLConnection content = (HttpURLConnection) new URL(this.url).openConnection();
-            content .setRequestProperty("Accept-Encoding", "identity"); 
+            content.setRequestProperty("Accept-Encoding", "identity");
+            content.setRequestMethod("POST");
             content.connect();
             int length = content.getContentLength();
+            content.disconnect();
+            if (length < 0){
+                StringBean sb = new StringBean ();
+                sb.setLinks (false);
+                sb.setReplaceNonBreakingSpaces (true);
+                sb.setCollapse (true);
+                sb.setURL (this.url); // the HTTP is performed here
+                String s = sb.getStrings ();
+                length = s.length();
+            }
             return length;
 	}
         
@@ -98,17 +113,69 @@ public class Crawler
             // extract links in url and return them
             // ADD YOUR CODES HERE
             HttpURLConnection content = (HttpURLConnection) new URL(this.url).openConnection();
+            content.setRequestProperty("Accept-Encoding", "identity");
             content.connect();
-            Date date = new Date(content.getLastModified());
+            Date date = new Date();
+            if (content.getLastModified() != 0){
+                date = new Date(content.getLastModified());
+            }else {
+                date = new Date(content.getDate());
+            }
+            content.disconnect();
             return date;
 	}
         
-	public static void main (String[] args) throws MalformedURLException, IOException
+        public String getPageTitle() throws Exception {
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(new URL(this.url).openStream()));
+
+            Pattern pHead = Pattern.compile("(?i)</HEAD>");
+            Matcher mHead;
+            Pattern pTitle = Pattern.compile("(?i)</TITLE>");
+            Matcher mTitle;
+
+            String inputLine;
+            boolean found=false;
+            boolean notFound=false;
+            String html = "";
+            String title=new String();
+            try{
+                while (!(((inputLine = in.readLine()) == null) || found || notFound)){
+                    html=html+inputLine;
+                    mHead=pHead.matcher(inputLine);
+                    if(mHead.find()){
+                        notFound=true;
+                        }
+                    else{
+                        mTitle=pTitle.matcher(inputLine);
+                        if(mTitle.find()){
+                            found=true;
+                            //System.out.println(inputLine);
+                        }
+                    }                                       
+                }
+                in.close();
+
+                html = html.replaceAll("\\s+", " ");
+                if(found){
+                    Pattern p = Pattern.compile("(?i)<TITLE.*?>(.*?)</TITLE>");
+                    Matcher m = p.matcher(html);            
+                    while (m.find() == true) {
+                        title=m.group(1);
+                      //System.out.println("Title "+title); 
+                    }
+                }
+            }catch(Exception e){
+            }
+            return title;
+        }
+        
+        
+	public static void main (String[] args) throws MalformedURLException, IOException, Exception
 	{
             try
             {
                 Crawler crawler = new Crawler("http://www.cse.ust.hk");
-
 //                Enumeration e=links.elements();
 //                while (e.hasMoreElements()) {         
 //                    System.out.println("link :" + e.nextElement());
@@ -117,6 +184,10 @@ public class Crawler
 //                        while (e.hasMoreElements()) {         
 //                            System.out.println("token :" + e.nextElement());
 //                        }
+
+                String title = crawler.getPageTitle();
+                System.out.println("title of page: "+title);
+
                 int length = crawler.getSize();
                 System.out.println("Size of page: "+length);
                 
@@ -143,4 +214,5 @@ public class Crawler
             }
 
 	}
+
 }
