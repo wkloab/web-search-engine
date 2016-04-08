@@ -139,61 +139,68 @@ public class InvertedIndex
 	public Object getHashtable(String key) throws IOException{
 		return hashtable.get(key);
 	}
-//		public static void main(String[] args){  
-//			ArrayList<Crawler> crawlerList=new ArrayList<Crawler>();
-//			try{
-//				//initialize docs
-//				Crawler crawler = new Crawler("http://www.cse.ust.hk");//doc1
-//				crawlerList.add(crawler);
-//				crawler = new Crawler("http://www.cse.ust.hk/admin/welcome/");//doc2
-//				crawlerList.add(crawler);
-//				crawler = new Crawler("http://www.cse.ust.hk/admin/about/");//doc3
-//				crawlerList.add(crawler);
-//				crawler = new Crawler("http://www.cse.ust.hk/admin/factsheet/");//doc4
-//				crawlerList.add(crawler);
-//				crawler = new Crawler("http://www.cse.ust.hk/News/?type=news|achievement");//doc5
-//				crawlerList.add(crawler);
-//				//link to db--ht1,handle word database
-//				InvertedIndex index = new InvertedIndex("4321phase1","ht1");
-//				for(int i=0;i<crawlerList.size();i++){
-//					Crawler tempCrawler = crawlerList.get(i);
-//					Vector<String> words = tempCrawler.extractWords();
-//					for(int position = 0; position < words.size(); position++){
-//						index.addEntry(words.get(position), tempCrawler.url, position);
-//					}
-//				}
-//				index.printAll();
-//				index.finalize();
-//				System.out.println("\n\n");
-//				// link to db--ht2,start handling doc database
-//				index = new InvertedIndex("4321phase1","ht2");
-//				for(int i=0;i<crawlerList.size();i++){
-//					Crawler tempCrawler = crawlerList.get(i);
-//					//task: add title to crawler class
-//					String tempTitle="doc"+i;
-//					//task: add last modifiedDate to crawler class
-//					String tempLastModifiedDate="today";
-//					//task: add size
-//					int tempSize=-1;
-//					ArrayList <String> tempLinksList=new ArrayList <String>();
-//					Vector<String> links = tempCrawler.extractLinks();
-//					for(int linkNo = 0; linkNo < links.size(); linkNo++)	{	
-//						tempLinksList.add(links.get(linkNo));
-//					}
-//					Doc tempDoc=new Doc(i, tempTitle,tempLastModifiedDate,tempSize,tempLinksList);
-//					index.addEntry(tempCrawler.url, tempDoc);
-//				}
-//				index.printAll_doc();
-//				index.finalize();
-//				
-//			}
-//			catch (ParserException e)
-//			{
-//				e.printStackTrace ();
-//			}
-//			catch(IOException ex)
-//			{
-//				System.err.println(ex.toString());
-//			}
-//		}
+		public static void main(String[] args){  
+			ArrayList<Crawler> crawlerList=new ArrayList<Crawler>();
+                        StopStem ss = new StopStem();
+			try{
+				//initialize docs
+				Crawler crawler = new Crawler("http://www.cse.ust.hk");//doc1
+				crawlerList.add(crawler);
+				crawler = new Crawler("http://www.cse.ust.hk/admin/welcome/");//doc2
+				crawlerList.add(crawler);
+				crawler = new Crawler("http://www.cse.ust.hk/admin/about/");//doc3
+				crawlerList.add(crawler);
+				crawler = new Crawler("http://www.cse.ust.hk/admin/factsheet/");//doc4
+				crawlerList.add(crawler);
+				crawler = new Crawler("http://www.cse.ust.hk/News/?type=news|achievement");//doc5
+				crawlerList.add(crawler);
+				//link to db--ht1,handle word database
+				InvertedIndex index = new InvertedIndex("4321phase1","ht1");
+				for(int i=0;i<crawlerList.size();i++){
+					Crawler tempCrawler = crawlerList.get(i);
+					Vector<String> words = tempCrawler.extractWords();
+                                        
+					for(int position = 0; position < words.size(); position++){
+                                            String tempWord = ss.stem(words.get(position).replaceAll(" ", ""));
+                                            if(!ss.isStopWord(tempWord)){
+						index.addEntry(tempWord, tempCrawler.geturl(), position);
+                                            }else{
+                                                System.out.println(words.get(position) + " should be stopped");
+                                            }
+				}
+				}
+				index.printAll();
+				index.finalize();
+				System.out.println("\n\n");
+				// link to db--ht2,start handling doc database
+				index = new InvertedIndex("4321phase1","ht2");
+				for(int i=0;i<crawlerList.size();i++){
+					Crawler tempCrawler = crawlerList.get(i);
+					//task: add title to crawler class
+					String tempTitle="doc"+i;
+					//task: add last modifiedDate to crawler class
+					String tempLastModifiedDate="today";
+					//task: add size
+					int tempSize=-1;
+					ArrayList <String> tempLinksList=new ArrayList <String>();
+					Vector<String> links = tempCrawler.extractLinks();
+					for(int linkNo = 0; linkNo < links.size(); linkNo++)	{	
+						tempLinksList.add(links.get(linkNo));
+					}
+					Doc tempDoc = new Doc(i, tempTitle,tempLastModifiedDate,tempSize,tempLinksList);
+					index.addEntry(tempCrawler.geturl(), tempDoc);
+				}
+				index.printAll_doc();
+				index.finalize();
+				
+			}
+			catch (ParserException e)
+			{
+				e.printStackTrace ();
+			}
+			catch(IOException ex)
+			{
+				System.err.println(ex.toString());
+			}
+		}
 }

@@ -13,12 +13,14 @@ import java.util.ArrayList;
  * @author RickyLo
  */
 class Doc implements Serializable{
+	public int docNo;
 	public String title;
 	public String lastModifiedDate;
 	public int size=-1;
 	public ArrayList<String> childLink;
 
-	Doc(String titlex, String lastModifiedDatex, int sizex, ArrayList<String> childLinkx){
+	Doc(int docNox, String titlex, String lastModifiedDatex, int sizex, ArrayList<String> childLinkx){
+		docNo=docNox;
 		title=titlex;
 		lastModifiedDate=lastModifiedDatex;
 		size=sizex;
@@ -36,3 +38,4 @@ class Doc implements Serializable{
 		childLink.add(childLinkx);
 	}
 }
+

@@ -11,7 +11,7 @@ import jdbm.helper.FastIterator;
 public class Main {
 	public static void main(String[] args){  
 		try{    
-                    File file = new File ("C:/Users/Me/Desktop/directory/file.txt");
+                    File file = new File ("file.txt");
                     PrintWriter printWriter = new PrintWriter ("file.txt");
 			//link to db--ht1,handle word database
 			InvertedIndex indexht2 = new InvertedIndex("4321phase1","ht2");
