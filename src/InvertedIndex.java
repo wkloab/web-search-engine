@@ -174,13 +174,14 @@ public class InvertedIndex
 				// link to db--ht2,start handling doc database
 				index = new InvertedIndex("4321phase1","ht2");
 				for(int i=0;i<crawlerList.size();i++){
+                                    try{
 					Crawler tempCrawler = crawlerList.get(i);
 					//task: add title to crawler class
-					String tempTitle="doc"+i;
+					String tempTitle= tempCrawler.getPageTitle();
 					//task: add last modifiedDate to crawler class
-					String tempLastModifiedDate="today";
+					String tempLastModifiedDate= tempCrawler.getLastModified().toString();
 					//task: add size
-					int tempSize=-1;
+					int tempSize= tempCrawler.getSize();
 					ArrayList <String> tempLinksList=new ArrayList <String>();
 					Vector<String> links = tempCrawler.extractLinks();
 					for(int linkNo = 0; linkNo < links.size(); linkNo++)	{	
@@ -188,6 +189,9 @@ public class InvertedIndex
 					}
 					Doc tempDoc = new Doc(i, tempTitle,tempLastModifiedDate,tempSize,tempLinksList);
 					index.addEntry(tempCrawler.geturl(), tempDoc);
+                                    }catch(Exception e){
+                                        
+                                    }
 				}
 				index.printAll_doc();
 				index.finalize();
