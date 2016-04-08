@@ -28,17 +28,8 @@ import org.htmlparser.beans.LinkBean;
 import java.net.URL;
 import java.util.Date;
 import java.util.Enumeration;
-<<<<<<< HEAD
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-=======
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpHead;
-import org.apache.http.impl.client.DefaultHttpClient;
->>>>>>> c98880f772af18f2ac3c7d4c9e251b1ea759cab0
 
 
 public class Crawler
@@ -99,12 +90,8 @@ public class Crawler
             // extract links in url and return them
             // ADD YOUR CODES HERE
             HttpURLConnection content = (HttpURLConnection) new URL(this.url).openConnection();
-<<<<<<< HEAD
             content.setRequestProperty("Accept-Encoding", "identity");
             content.setRequestMethod("POST");
-=======
-            content.setRequestProperty("Accept-Encoding", "identity"); 
->>>>>>> c98880f772af18f2ac3c7d4c9e251b1ea759cab0
             content.connect();
             int length = content.getContentLength();
             content.disconnect();
@@ -126,11 +113,7 @@ public class Crawler
             // extract links in url and return them
             // ADD YOUR CODES HERE
             HttpURLConnection content = (HttpURLConnection) new URL(this.url).openConnection();
-<<<<<<< HEAD
             content.setRequestProperty("Accept-Encoding", "identity");
-=======
-            content.setRequestProperty("Accept-Encoding", "identity"); 
->>>>>>> c98880f772af18f2ac3c7d4c9e251b1ea759cab0
             content.connect();
             Date date = new Date();
             if (content.getLastModified() != 0){
