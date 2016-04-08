@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import jdbm.helper.FastIterator;
 
@@ -30,12 +32,27 @@ public class Main {
 					keyht1=(String)iterht1.next();
 					while(keyht1!=null){
 						ArrayList<Content> tempContentList=(ArrayList<Content>)indexht1.getHashtable(keyht1);
+                                                ArrayList<KeySize> keySizeList = new ArrayList<KeySize>();
 						for(int a=0;a<tempContentList.size();a++){
 //							printWriter.print("web1:"+tempContentList.get(a).docURL+"\n"+"web2:"+keyht2+"\n");
 							if(tempContentList.get(a).docURL.equals(keyht2)){
-								printWriter.print(keyht1+" "+tempContentList.get(a).location.size()+"; ");
+                                                                
+								keySizeList.add(new KeySize(keyht1, tempContentList.get(a).location.size()));
 							}
 						}
+                                                Comparator<KeySize> comparator = new Comparator<KeySize>() {
+                                                
+                                                    @Override
+                                                    public int compare(KeySize o1, KeySize o2) {
+                                                        return new Integer(o1.getSize()).compareTo(o2.getSize()); //To change body of generated methods, choose Tools | Templates.
+                                                    }
+                                                };
+                                                Collections.sort(keySizeList, comparator);
+                                                for(int a=0;a< keySizeList.size();a++){
+                                                    System.out.println(keySizeList.get(a).getSize());
+                                                    printWriter.print(keySizeList.get(a).getKey()+" "+keySizeList.get(a).getSize()+"; ");
+                                                }
+                                                
 						keyht1=(String)iterht1.next();
 					}
 					printWriter.print("\n\n");
