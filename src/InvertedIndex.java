@@ -143,17 +143,13 @@ public class InvertedIndex
 			ArrayList<Crawler> crawlerList=new ArrayList<Crawler>();
                         StopStem ss = new StopStem();
 			try{
-				//initialize docs
+				//initialize docs                               
 				Crawler crawler = new Crawler("http://www.cse.ust.hk");//doc1
-				crawlerList.add(crawler);
-				crawler = new Crawler("http://www.cse.ust.hk/admin/welcome/");//doc2
-				crawlerList.add(crawler);
-				crawler = new Crawler("http://www.cse.ust.hk/admin/about/");//doc3
-				crawlerList.add(crawler);
-				crawler = new Crawler("http://www.cse.ust.hk/admin/factsheet/");//doc4
-				crawlerList.add(crawler);
-				crawler = new Crawler("http://www.cse.ust.hk/News/?type=news|achievement");//doc5
-				crawlerList.add(crawler);
+                                Vector<String> childLinks = crawler.extractLinks();
+                                for(int i = 0; i < childLinks.size(); i++){		
+                                        Crawler crawler_child = new Crawler(childLinks.get(i));
+                                        crawlerList.add(crawler_child);                    
+                                }
 				//link to db--ht1,handle word database
 				InvertedIndex index = new InvertedIndex("4321phase1","ht1");
 				for(int i=0;i<crawlerList.size();i++){

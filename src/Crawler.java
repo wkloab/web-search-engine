@@ -171,7 +171,7 @@ public class Crawler
         }
         
         
-	public static void main (String[] args) throws MalformedURLException, IOException, Exception
+    public static void main (String[] args) throws MalformedURLException, IOException, Exception
 	{
             try
             {
@@ -206,7 +206,7 @@ public class Crawler
                 for(int i = 0; i < links.size(); i++)		
                         System.out.println(links.get(i));
                 System.out.println("");
-
+                
             }
             catch (ParserException e)
             {
