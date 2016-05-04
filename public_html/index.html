@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <title id="title"></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=10"/>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+  <meta name="Content-Language" content="English, Englisch" />
+  <meta name="keywords" content="YaCy HTTP search engine spider indexer java network open free download Mac Windows Linux Software development" />
+  <meta name="description" content="Software HTTP Freeware Home Page" />
+  <meta name="copyright" content="Michael Christen et al." />
+
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <script src="bootstrap/js/jquery.min.js"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="bootstrap/js/docs.min.js"></script>
+
+  <link href="css/bootstrap-base.css" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" media="all" href="css/base.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
+
+  <script type="text/javascript" src="./bootstrap/js/typeahead.jquery.min.js"></script>
+  <script type="text/javascript">
+     var suggestMatcher = function() {
+       return function opensearch(q, cb) {
+       	 $.getJSON(suggestUrl + "&amp;q="+ q, function(data) {
+           	var parsed = [];
+            for (var i = 0; i < data[0][1].length; i++) {
+                var row = data[0][1][i];
+                if (row) {
+                    parsed[parsed.length] = {
+                        data: [row],
+                        value: row,
+                        result: row
+                    };
+                };
+            };
+            cb(parsed);
+          });
+        };
+      };
+    $(document).ready(function() {
+      $('#search').typeahead({hint:false,highlight:true,minLength:1}, {
+    	name: 'states',
+    	displayKey: 'value',
+    	source: suggestMatcher()
+      });
+    });
+  </script>
+  <style type="text/css">.twitter-typeahead {margin: 0px;padding: 0px;top:2px;}</style> <!-- fix for input window -->
+</head>
+  <body id="index" onload="document.getElementById('search').focus()">
+
+      <!-- top navigation -->
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a id="homepage" class="navbar-brand" href="index.html" style="position:absolute;top:-6px;display:inline;white-space:nowrap;">
+              <img id="logo" class="yacylogo" src="images/YaCyLogo2011_60.png" style="height:auto; width:auto; max-width:200px; max-height:32px;vertical-align:middle">
+            </a>
+            <span id="topmenu" style="position:absolute;top:12px;left:80px;display:inline;white-space:nowrap;font-size:2em;"></span>
+          </div>
+        </div>
+      </div>
+
+<div class="container-fluid">
+  <div class="starter-template">
+
+	<h2 class="yacy"><a href="index.html" class="yacylogo" id="homepage"><img src="images/YaCyLogo2011_60.png" alt="yacy" id="biglogo" style="  position:relative; width:100%"/></a></h2>
+    <h2 class="yacy" id="greeting"></h2>
+
+    <form class="search form-inline" action="index.jsp" method="post" id="searchform" accept-charset="UTF-8">
+      <fieldset class="maininput">
+        <div class="input-group">
+          <input name="query" id="search" type="text" size="40" maxlength="80" value="" autofocus="autofocus" onFocus="this.select()" class="form-control searchinput typeahead"  />
+          <div class="input-group-btn">
+            <button id="Enter" name="Enter" class="btn btn-primary" type="submit">Search</button>
+          </div>
+        </div>
+        <input type="hidden" name="verify" value="false" />
+
+        <input type="hidden" name="nav" value="filetype,protocol,hosts,authors,collections,namespace,topics,date" />
+        <input type="hidden" name="startRecord" id="startRecord" value="0" />
+        <input type="hidden" name="indexof" value="off" />
+        <input type="hidden" name="meanCount" value="5" />
+
+        <input type="hidden" name="resource" value="global" />
+        <input type="hidden" name="prefermaskfilter" value="" />
+        <input type="hidden" name="maximumRecords" value="10" />
+        <input id="timezoneOffset" type="hidden" name="timezoneOffset" value=""><script>document.getElementById("timezoneOffset").value = new Date().getTimezoneOffset();</script>
+      </fieldset>
+
+    </form>
+
+
+        </div>
+  </div>
+</div>
+<!-- modify content according to query url attributes -->
+<script type="text/javascript">
+document.getElementById("title").appendChild(document.createTextNode(headline));
+document.getElementById("topmenu").appendChild(document.createTextNode(headline));
+document.getElementById("greeting").appendChild(document.createTextNode(greeting));
+document.getElementById("homepage").setAttribute("href", homepage);
+document.getElementById("logo").setAttribute("src", logo.replace("../",""));
+document.getElementById("biglogo").setAttribute("src", logo.replace("../",""));
+document.getElementById("search").setAttribute("placeholder", queryplaceholder);
+</script>
+</body>
+</html>
