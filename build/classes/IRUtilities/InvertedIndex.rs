@@ -1,2 +1,0 @@
-IRUtilities.InvertedIndex
-IRUtilities.Posting

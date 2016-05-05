@@ -1,2 +1,0 @@
-IRUtilities.Property
-IRUtilities.PageProperty
