@@ -7,11 +7,11 @@ public class Link implements Comparable<Link>{
 	private double score;
 	private String title;
 	private String url;
-	private String lastUpdate;
+	private String lastModified;
 	private int pageSize;
-	private Vector<String> PLink;
-	private Vector<String> CLink;
-	private Vector<Vocab> keywords;
+	private Vector<String> parentLinks;
+	private Vector<String> childLinks;
+	private Vector<Word> keywords;
 	
 	public int compareTo(Link a) {
 	       //return either 1, 0, or -1
@@ -30,17 +30,17 @@ public class Link implements Comparable<Link>{
 		String result = score+"\n";
 		result += title+"\n";
 		result += url+"\n";
-		result += lastUpdate+":"+pageSize+"\n";
+		result += lastModified+":"+pageSize+"\n";
 		for(int i = 0; i < keywords.size(); i++){
-			Vocab temp = keywords.elementAt(i);
+			Word temp = keywords.elementAt(i);
 			result += temp.getText()+" "+temp.getFreq()+"; ";
 		}
 		result+="\n";
-		for(int i = 0; i < PLink.size(); i++){
-			result += PLink.elementAt(i)+"\n";
+		for(int i = 0; i < parentLinks.size(); i++){
+			result += parentLinks.elementAt(i)+"\n";
 		}
-		for(int i = 0; i < CLink.size(); i++){
-			result += CLink.elementAt(i)+"\n";
+		for(int i = 0; i < childLinks.size(); i++){
+			result += childLinks.elementAt(i)+"\n";
 		}
 		return result+"\n";
 	}
@@ -53,12 +53,12 @@ public class Link implements Comparable<Link>{
 		this.pageSize = pageSize;
 	}
 
-	public String getLastUpdate() {
-		return lastUpdate;
+	public String getLastModified() {
+		return lastModified;
 	}
 
-	public void setLastUpdate(String lastUpdate) {
-		this.lastUpdate = lastUpdate;
+	public void setLastModified(String lastUpdate) {
+		this.lastModified = lastUpdate;
 	}
 
 	public String getUrl() {
@@ -70,9 +70,9 @@ public class Link implements Comparable<Link>{
 	}
 
 	public Link(){
-		PLink = new Vector<String>();
-		CLink = new Vector<String>();
-		keywords = new Vector<Vocab>();
+		parentLinks = new Vector<String>();
+		childLinks = new Vector<String>();
+		keywords = new Vector<Word>();
 	}
 	
 	public void setScore(double score){
@@ -92,26 +92,26 @@ public class Link implements Comparable<Link>{
 	}
 	
 	public void addParentLink(String link){
-		PLink.add(link);
+		parentLinks.add(link);
 	}
 	
 	public Vector<String> getParentLink(){
-		return PLink;
+		return parentLinks;
 	}
 	
 	public void addChildLink(String link){
-		CLink.add(link);
+		childLinks.add(link);
 	}
 	
 	public Vector<String> getChildLink(){
-		return CLink;
+		return childLinks;
 	}
 
-	public void addKeyword(Vocab keyword){
+	public void addKeyword(Word keyword){
 		keywords.add(keyword);
 	}
 	
-	public Vector<Vocab> getKeywords(){
+	public Vector<Word> getKeywords(){
 		return keywords;
 	}
 	

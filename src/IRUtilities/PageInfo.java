@@ -14,22 +14,22 @@ import javax.swing.text.html.parser.Parser;
 class Property implements Serializable {
 	public String title;
 	public String url;
-	public String lastModifyDate;
+	public String lastModifiedDate;
 	public int size;
 
 	Property(String title, String url, String lastModifyDate, int size){
 		this.title = title;
 		this.url = url;
-		this.lastModifyDate = lastModifyDate;
+		this.lastModifiedDate = lastModifyDate;
 		this.size = size;
 	}
 }
 
-public class PageProperty {
+public class PageInfo {
 	private RecordManager recman;
 	private HTree hashtable;
 
-	public PageProperty(RecordManager recman, String objectname) throws IOException {
+	public PageInfo(RecordManager recman, String objectname) throws IOException {
 		this.recman = recman;
 		long recid = recman.getNamedObject(objectname);
 
@@ -71,7 +71,7 @@ public class PageProperty {
 	
 	public String getLastDate(String key) throws IOException{
 		Property temp = (Property)hashtable.get(key);
-		return temp.lastModifyDate;
+		return temp.lastModifiedDate;
 	}
 	
 	public int getPageSize(String key) throws IOException{
@@ -86,7 +86,7 @@ public class PageProperty {
 		Property temp = (Property)hashtable.get(key);
 		temp.title = title;
 		temp.url = url;
-		temp.lastModifyDate = lastModifyDate;
+		temp.lastModifiedDate = lastModifyDate;
 		temp.size = size;
 	}
 	
@@ -99,7 +99,7 @@ public class PageProperty {
 		String key;
 		while ((key = (String) iter.next()) != null) {
 			Property temp = (Property)hashtable.get(key);
-			System.out.println(key + ": " + temp.title+","+temp.url+","+temp.lastModifyDate+","+temp.size);
+			System.out.println(key + ": " + temp.title+","+temp.url+","+temp.lastModifiedDate+","+temp.size);
 		}
 	}
 	

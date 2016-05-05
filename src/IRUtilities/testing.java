@@ -30,7 +30,7 @@ public class testing {
 	private static BufferedWriter out;
 	private static RecordManager recman;
 	private static InvertedIndex ParentChild;
-	private static PageProperty Pageppt;
+	private static PageInfo Pageppt;
 	private static Indexer maxTermFreq;
 	private static InvertedIndex termWth;
 	private static InvertedIndex titleForwardIndex;
@@ -49,7 +49,7 @@ public class testing {
 		ForwardIndex = new InvertedIndex(recman, "ForwardIndex");
 		ChildParent = new InvertedIndex(recman, "ParentChild");
 		ParentChild = new InvertedIndex(recman, "PC");
-		Pageppt  = new PageProperty(recman, "PPT");
+		Pageppt  = new PageInfo(recman, "PPT");
 		fstream = new FileWriter("spider_result.txt");
 		out = new BufferedWriter(fstream);
 		maxTermFreq = new Indexer(recman, "maxTermFreq");
@@ -61,9 +61,9 @@ public class testing {
 
 		
 		Vector<String> keywords = new Vector<String>();
-		keywords.add("aveng");
-		keywords.add("news");
-                keywords.add("hi");
+		keywords.add("now");
+		keywords.add("palying");
+                keywords.add("hello");
 		SearchEngine se = new SearchEngine();
 		Vector<Link> result = se.search(keywords);
 		

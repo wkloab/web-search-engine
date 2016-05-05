@@ -39,8 +39,8 @@ public class Crawler
 	}
 	
 	public int pageSize() throws IOException{
-		URL yahoo = new URL(url);
-        URLConnection yc = yahoo.openConnection();
+		URL website = new URL(url);
+        URLConnection yc = website.openConnection();
         BufferedReader in = new BufferedReader(
                                 new InputStreamReader(
                                 yc.getInputStream()));

@@ -28,7 +28,7 @@ public class spider {
 	private static InvertedIndex ChildParent;
 	private static RecordManager recman;
 	private static InvertedIndex ParentChild;
-	private static PageProperty Pageppt;
+	private static PageInfo Pageppt;
 	private static Indexer maxTermFreq;
 	private static InvertedIndex termWth;
 	
@@ -44,7 +44,7 @@ public class spider {
 			ForwardIndex = new InvertedIndex(recman, "ForwardIndex");
 			ChildParent = new InvertedIndex(recman, "ParentChild");
 			ParentChild = new InvertedIndex(recman, "PC");
-			Pageppt  = new PageProperty(recman, "PPT");
+			Pageppt  = new PageInfo(recman, "PPT");
 			maxTermFreq = new Indexer(recman, "maxTermFreq");
 			termWth = new InvertedIndex(recman, "termWth");
 			System.out.println("loading...");
